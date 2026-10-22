@@ -77,8 +77,16 @@ border:1px solid rgba(255,255,255,.09);color:#6b7f9a}
   <div id="top">
     <div id="brand">AURORA</div>
     <div id="topBtns">
-      <div class="icobtn" id="pauseBtn" onclick="togglePause()">⏸</div>
-      <div class="icobtn" onclick="openSettings()">⚙</div>
+      <div class="icobtn" id="pauseBtn" onclick="togglePause()" aria-label="暂停">
+        <svg id="icoPause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.4"/><rect x="14" y="4" width="4" height="16" rx="1.4"/></svg>
+        <svg id="icoPlay" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:none"><path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.1-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14z"/></svg>
+      </div>
+      <div class="icobtn" onclick="openSettings()" aria-label="设置">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3.1"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
     </div>
   </div>
   <div id="stats">
@@ -133,6 +141,12 @@ var overEl=document.getElementById('over'),overTitle=document.getElementById('ov
 var ovScoreEl=document.getElementById('ovScore'),ovBestEl=document.getElementById('ovBest'),ovLenEl=document.getElementById('ovLen');
 var wrapEl=document.getElementById('wrap'),comboEl=document.getElementById('combo');
 var pauseBtn=document.getElementById('pauseBtn'),settingsEl=document.getElementById('settings'),setBody=document.getElementById('setBody');
+var icoPause=document.getElementById('icoPause'),icoPlay=document.getElementById('icoPlay');
+function setPauseIcon(isPaused){
+  icoPause.style.display=isPaused?'none':'';
+  icoPlay.style.display=isPaused?'':'none';
+  pauseBtn.setAttribute('aria-label',isPaused?'继续':'暂停');
+}
 
 var GRID=CFG.grid,snake,dir,nextDir,food,score,best,alive,cell,speed,paused=false;
 var lastTime=0,acc=0,foodPulse=0,deathFlash=0,shakeTrauma=0,shakeT=0;
@@ -180,7 +194,7 @@ function init(){
   score=0;alive=true;paused=false;wave=1;
   deathFlash=0;shakeTrauma=0;comboCount=0;comboTimer=0;newRecord=false;boosting=false;
   overEl.classList.remove('show');wrapEl.classList.remove('hit','dead');
-  scoreEl.textContent='0';levelEl.textContent='1';pauseBtn.textContent='⏸';
+  scoreEl.textContent='0';levelEl.textContent='1';setPauseIcon(false);
   placeFood();acc=0;lastTime=0;fit();
   requestAnimationFrame(loop);
 }
@@ -327,7 +341,7 @@ function turn(d){
 }
 function togglePause(){
   if(!alive)return;
-  paused=!paused;pauseBtn.textContent=paused?'▶':'⏸';
+  paused=!paused;setPauseIcon(paused);
   if(paused)lastTime=0;
 }
 function restart(){init();}
@@ -392,8 +406,8 @@ function buildSettings(){
   h+='</div></div>';
   setBody.innerHTML=h;
 }
-function openSettings(){buildSettings();settingsEl.classList.add('show');if(alive)paused=true;pauseBtn.textContent='▶';}
-function closeSettings(){settingsEl.classList.remove('show');if(alive){paused=false;lastTime=0;pauseBtn.textContent='⏸';}}
+function openSettings(){buildSettings();settingsEl.classList.add('show');if(alive){paused=true;setPauseIcon(true);}}
+function closeSettings(){settingsEl.classList.remove('show');if(alive){paused=false;lastTime=0;setPauseIcon(false);}}
 function pickTheme(k){CFG.theme=k;saveCfg();applyTheme();buildSettings();}
 function pickGrid(g){CFG.grid=g;saveCfg();buildSettings();restart();}
 function pickSpeed(v){CFG.speed=v;saveCfg();buildSettings();}

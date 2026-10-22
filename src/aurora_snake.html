@@ -128,8 +128,16 @@ transition:transform .14s cubic-bezier(.34,1.56,.64,1),box-shadow .2s}
   <div id="top">
     <div id="brand">AURORA</div>
     <div id="topBtns">
-      <div class="icobtn" id="pauseBtn" onclick="togglePause()">⏸</div>
-      <div class="icobtn" id="setBtn" onclick="openSettings()">⚙</div>
+      <div class="icobtn" id="pauseBtn" onclick="togglePause()" aria-label="暂停">
+        <svg id="icoPause" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.4"/><rect x="14" y="4" width="4" height="16" rx="1.4"/></svg>
+        <svg id="icoPlay" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:none"><path d="M8 5.14v13.72a1 1 0 0 0 1.54.84l10.1-6.86a1 1 0 0 0 0-1.68L9.54 4.3A1 1 0 0 0 8 5.14z"/></svg>
+      </div>
+      <div class="icobtn" id="setBtn" onclick="openSettings()" aria-label="设置">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3.1"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
     </div>
   </div>
 
@@ -319,6 +327,13 @@ var overEl=document.getElementById('over'), overTitle=document.getElementById('o
 var ovScoreEl=document.getElementById('ovScore'), ovBestEl=document.getElementById('ovBest'), ovLenEl=document.getElementById('ovLen');
 var wrapEl=document.getElementById('wrap'), comboEl=document.getElementById('combo'), powerTip=document.getElementById('powerTip');
 var pauseBtn=document.getElementById('pauseBtn'), settingsEl=document.getElementById('settings'), setBody=document.getElementById('setBody');
+var icoPause=document.getElementById('icoPause'), icoPlay=document.getElementById('icoPlay');
+// 暂停中显示"播放"图标，运行中显示"暂停"图标
+function setPauseIcon(isPaused){
+  icoPause.style.display = isPaused ? 'none' : '';
+  icoPlay.style.display  = isPaused ? '' : 'none';
+  pauseBtn.setAttribute('aria-label', isPaused ? '继续' : '暂停');
+}
 var energyEl=document.getElementById('energy'), energyWrap=document.getElementById('energyWrap');
 energyWrap.addEventListener('click', function(){ burst(); });
 var auroraEl=document.getElementById('aurora');
@@ -431,7 +446,7 @@ function init(){
   overEl.classList.remove('show');
   wrapEl.classList.remove('hit','dead');
   scoreEl.textContent='0'; levelEl.textContent='1';
-  pauseBtn.textContent='⏸';
+  setPauseIcon(false);
   updateEnergy();
   placeFood();
   acc=0; lastTime=0;
@@ -762,7 +777,7 @@ function turn(d){
 function togglePause(){
   if(!alive) return;
   paused = !paused;
-  pauseBtn.textContent = paused ? '▶' : '⏸';
+  setPauseIcon(paused);
   if(paused) lastTime=0;
   sfxUI();
 }
@@ -877,8 +892,8 @@ function buildSettings(){
   setBody.innerHTML = html;
 }
 
-function openSettings(){ sfxUI(); buildSettings(); settingsEl.classList.add('show'); if(alive) paused=true; pauseBtn.textContent='▶'; }
-function closeSettings(){ settingsEl.classList.remove('show'); if(alive){ paused=false; lastTime=0; pauseBtn.textContent='⏸'; } sfxUI(); }
+function openSettings(){ sfxUI(); buildSettings(); settingsEl.classList.add('show'); if(alive){ paused=true; setPauseIcon(true); } }
+function closeSettings(){ settingsEl.classList.remove('show'); if(alive){ paused=false; lastTime=0; setPauseIcon(false); } sfxUI(); }
 
 function pickTheme(k){ CFG.theme=k; saveCfg(); applyTheme(); buildSettings(); sfxUI(); }
 function pickScale(k){ CFG.scale=k; saveCfg(); buildSettings(); playNote(4,{vol:0.06}); playNote(7,{vol:0.05}); }
