@@ -4,6 +4,8 @@
 
 A single-file neon snake game with glassmorphism UI, procedural audio synthesis, and five power-ups. Zero dependencies, zero build step — open the HTML and play.
 
+**[▶ 在线试玩](https://lnuxe.github.io/aurora-snake/)** · [GitHub Pages](https://lnuxe.github.io/aurora-snake/) · [Release v1.0.0](https://github.com/lnuxe/aurora-snake/releases/tag/v1.0.0)
+
 ![游戏界面](docs/screenshot-game.png)
 
 ## 特性
