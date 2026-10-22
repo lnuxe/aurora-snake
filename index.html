@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#05070a">
+<meta name="description" content="AURORA 极光贪吃蛇 —— 玻璃拟态 UI + 程序化音效 + 5 种道具的单文件贪吃蛇游戏">
+<title>AURORA SNAKE · 极光贪吃蛇</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2305070a'/%3E%3Ccircle cx='62' cy='50' r='11' fill='%235eead4'/%3E%3Ccircle cx='40' cy='50' r='10' fill='%23818cf8'/%3E%3Ccircle cx='22' cy='50' r='9' fill='%23f472b6'/%3E%3C/svg%3E">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#05070a;color:#eaf2ff;
+font-family:-apple-system,"SF Pro Display","PingFang SC",system-ui,sans-serif;
+-webkit-font-smoothing:antialiased;overflow:hidden}
+#aurora{position:fixed;inset:0;pointer-events:none;opacity:.55;
+background:
+ radial-gradient(58% 42% at 18% 12%,rgba(94,234,212,.30),transparent 70%),
+ radial-gradient(52% 40% at 84% 22%,rgba(129,140,248,.28),transparent 72%),
+ radial-gradient(64% 46% at 50% 96%,rgba(244,114,182,.20),transparent 74%);
+filter:blur(28px);animation:shift 18s ease-in-out infinite alternate}
+@keyframes shift{0%{transform:scale(1) translate(0,0)}50%{transform:scale(1.08) translate(-2%,2%)}100%{transform:scale(1.03) translate(2%,-1%)}}
+#stage{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:22px;padding:24px;text-align:center}
+h1{font-size:clamp(30px,9vw,54px);font-weight:900;letter-spacing:8px;
+background:linear-gradient(100deg,#5eead4,#818cf8 55%,#f472b6);
+-webkit-background-clip:text;background-clip:text;color:transparent;
+filter:drop-shadow(0 0 26px rgba(94,234,212,.45))}
+.sub{font-size:clamp(12px,3.4vw,15px);color:#6b7f9a;line-height:1.8;max-width:520px}
+.sub b{color:#5eead4;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
+.chip{font-size:11.5px;padding:7px 14px;border-radius:99px;
+background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);
+color:#a8bdd4;backdrop-filter:blur(18px)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+padding:15px 34px;border-radius:15px;font-size:14.5px;font-weight:800;letter-spacing:1px;
+text-decoration:none;min-height:50px;transition:transform .16s cubic-bezier(.34,1.56,.64,1),box-shadow .22s}
+a.primary{color:#04110e;background:linear-gradient(100deg,#5eead4,#818cf8);
+box-shadow:0 8px 32px rgba(94,234,212,.42)}
+a.primary:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 40px rgba(94,234,212,.6)}
+a.ghost{color:#eaf2ff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
+backdrop-filter:blur(18px)}
+a.ghost:hover{transform:translateY(-2px);background:rgba(255,255,255,.11)}
+footer{position:fixed;bottom:18px;left:0;right:0;text-align:center;font-size:11px;color:#3f5168;z-index:2}
+footer a{color:#5a7a96;text-decoration:none}
+footer a:hover{color:#5eead4}
+@media(max-height:620px){#stage{gap:14px}h1{font-size:30px;letter-spacing:5px}.sub{display:none}}
+</style>
+</head>
+<body>
+<div id="aurora"></div>
+<div id="stage">
+  <h1>AURORA</h1>
+  <div class="sub">
+    极光贪吃蛇 —— <b>玻璃拟态 UI</b> · <b>程序化音效</b> · <b>5 种道具</b><br>
+    零依赖单文件游戏，滑动转向，长按加速
+  </div>
+  <div class="chips">
+    <span class="chip">5 套主题</span>
+    <span class="chip">4 音阶 × 3 音色</span>
+    <span class="chip">能量爆发</span>
+    <span class="chip">连击倍率</span>
+    <span class="chip">60 FPS</span>
+  </div>
+  <div class="actions">
+    <a class="btn primary" href="src/aurora_snake.html">▶ 开始游戏</a>
+    <a class="btn ghost" href="src/aurora_snake_lite.html">精简版</a>
+    <a class="btn ghost" href="https://github.com/lnuxe/aurora-snake">GitHub</a>
+  </div>
+</div>
+<footer>
+  <a href="https://github.com/lnuxe/aurora-snake">lnuxe/aurora-snake</a> · MIT License
+</footer>
+</body>
+</html>
